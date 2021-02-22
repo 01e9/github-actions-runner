@@ -58,8 +58,11 @@ RUN mkdir -p ~/.ssh \
     && ssh-keyscan -t rsa bitbucket.org >> ~/.ssh/known_hosts \
     && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
+USER root
+
+COPY docker-entrypoint.sh /usr/bin/
+
 VOLUME [ "/home/github/runner" ]
 
-ENTRYPOINT ["/tini", "--"]
-
-CMD ["bash", "-c", "./config.sh ${RUNNER_CONFIG_ARGS}; ./run.sh; sleep infinity"]
+ENTRYPOINT ["/tini", "docker-entrypoint.sh", "--"]
+CMD []
