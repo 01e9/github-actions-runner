@@ -13,4 +13,4 @@ COMMAND="cd $(pwd); ${COMMAND}"
 
 echo "Executing as github '${COMMAND}'"
 
-sudo -E -u github bash -c "${COMMAND}"
+sudo -n -E -H -u github bash -c "${COMMAND}"
