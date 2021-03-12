@@ -3,11 +3,8 @@ FROM ubuntu:20.04
 ARG TINI_VERSION='0.19.0'
 ARG RUNNER_VERSION=2.277.1
 
-ARG TZ_CONTINENT='Europe'
-ARG TZ_CITY='Chisinau'
-ENV TS='Europe/Chisinau'
-
-ENV RUNNER_CONFIG_ARGS="--url https://github.com/foo/bar --token BAZ"
+ENV RUNNER_CONFIG_ARGS='--url https://github.com/foo/bar --token BAZ'
+ENV TZ='Europe/Chisinau'
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
@@ -15,8 +12,8 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 RUN apt update \
   # tzdata
   && truncate -s0 /tmp/preseed.cfg \
-      && echo "tzdata tzdata/Areas select ${TZ_CONTINENT}" >> /tmp/preseed.cfg \
-      && echo "tzdata tzdata/Zones/${TZ_CONTINENT} select ${TZ_CITY}" >> /tmp/preseed.cfg \
+      && echo "tzdata tzdata/Areas select Europe" >> /tmp/preseed.cfg \
+      && echo "tzdata tzdata/Zones/Europe select Chisinau" >> /tmp/preseed.cfg \
       && debconf-set-selections /tmp/preseed.cfg \
       && rm -f /etc/timezone /etc/localtime \
       && apt-get install -y tzdata \

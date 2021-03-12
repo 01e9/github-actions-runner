@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+set -e
+
+echo "Setting timezone ${TZ}"
+ln -snf "/usr/share/zoneinfo/${TZ}" /etc/localtime
+echo "${TZ}" > /etc/timezone
+
 # fix `docker` group id (to match id on host)
 if [[ -S /var/run/docker.sock ]]; then
   LOCAL_ID=$(getent group docker | cut -d: -f3)
@@ -8,8 +14,13 @@ if [[ -S /var/run/docker.sock ]]; then
   echo "Fixed docker group id ${LOCAL_ID} -> ${HOST_ID}"
 fi
 
-COMMAND='./config.sh ${RUNNER_CONFIG_ARGS}; ./run.sh; sleep infinity'
-COMMAND="cd $(pwd); ${COMMAND}"
+if [ -n "${*}" ]; then
+  COMMAND="${*}"
+else
+  # `sleep infinity` because runner start in background and does self-update
+  COMMAND='./config.sh ${RUNNER_CONFIG_ARGS}; ./run.sh; sleep infinity'
+  COMMAND="cd $(pwd); ${COMMAND}"
+fi
 
 echo "Executing as github '${COMMAND}'"
 
