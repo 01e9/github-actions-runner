@@ -6,7 +6,7 @@ Docker image for self-hosted Github actions runner.
 
 ```sh
 docker run -d \
-    -e RUNNER_CONFIG_ARGS='--url https://github.com/foo/bar --token FOOBAR' \
+    -e RUNNER_CONFIG_ARGS='--url https://github.com/foo/bar --token FOOBAR --name my-runner-name' \
     01e9/github-actions-runner
 ```
 
@@ -50,7 +50,7 @@ services:
     container_name: runner_project_1
     environment:
       << : *env
-      RUNNER_CONFIG_ARGS: "--url https://github.com/example/project_1 --token FOO"
+      RUNNER_CONFIG_ARGS: "--url https://github.com/example/project_1 --token FOO --name my-runner-name"
     volumes:
       - project_1:/home/github/runner
       - *volume-ssh-key
