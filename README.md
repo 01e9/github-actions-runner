@@ -15,8 +15,7 @@ docker run -d \
 ```yaml
 version: '3.5'
 
-x-common:
-  &common
+x-common: &common
   image: 01e9/github-actions-runner
   restart: unless-stopped
 
@@ -32,12 +31,10 @@ x-docker-in-docker:
 
 x-max-cpus: &max-cpus '3'
 
-x-env:
-  &env
+x-env: &env
   MAX_CPUS: *max-cpus
 
-x-resource-limits:
-  &resource-limits
+x-resource-limits: &resource-limits
   cpus: *max-cpus
   mem_limit: '3g'
 
@@ -49,8 +46,7 @@ volumes:
 
 services:
   project_1:
-    << : *common
-    << : *resource-limits
+    << : [*common, *resource-limits]
     container_name: runner_project_1
     environment:
       << : *env
@@ -61,8 +57,7 @@ services:
       - *volume-docker-sock
       - *volume-docker-config
   project_1:
-    << : *common
-    << : *resource-limits
+    << : [*common, *resource-limits]
     container_name: runner_project_2
     environment:
       << : *env
