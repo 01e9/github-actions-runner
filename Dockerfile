@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 ARG TINI_VERSION='0.19.0'
-ARG RUNNER_VERSION=2.277.1
+ARG RUNNER_VERSION=2.305.0
 
 ENV RUNNER_CONFIG_ARGS='--url https://github.com/foo/bar --token BAZ'
 ENV TZ='Europe/Chisinau'
@@ -18,7 +18,7 @@ RUN apt update \
       && rm -f /etc/timezone /etc/localtime \
       && apt-get install -y tzdata \
   && apt install -y \
-  	curl wget htop ssh iputils-ping git nano sudo ca-certificates apt-transport-https gnupg-agent software-properties-common \
+      curl wget htop ssh iputils-ping git nano sudo ca-certificates apt-transport-https gnupg-agent software-properties-common \
   && (curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -) \
   && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
   && apt update \
